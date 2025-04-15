@@ -41,6 +41,9 @@ void podaAgen( Agen<int>&A,int x)
     busqueda_Rec(A,x,A.raiz());
 }
 
+
+
+
 void busqueda_Rec(Agen<int>& A,int x,typename Agen<int>::nodo n)
 {
     if(n!=Agen<int>::NODO_NULO)
@@ -63,7 +66,7 @@ void busqueda_Rec(Agen<int>& A,int x,typename Agen<int>::nodo n)
     }
 }
 
-//debemos eliminar primero los nodos hoja, ya que así es como funciona el Agen en nuestro TAD
+//debemos eliminar primero los nodos hoja, ya que así es como funciona el Agen en nuestro TAD La poda aún falla
 void podaAgen_Rec(Agen<int>& A,typename Agen<int>::nodo n)
 {
     if(A.hijoIzqdo(n)==Agen<int>::NODO_NULO) //el hijo del nodo es un nodo hoja, lo podemos eliminar
