@@ -20,11 +20,14 @@ int main()
     cout << "Introduce un valor para podar en el árbol" << endl;
     cin >> x;
 
+    cout << "Arbol antes de la poda: " << endl;
     // Arbol antes de la poda:
     imprimirAgen(A);
 
     // procedemos a podar
     podaAgen(A, x);
+
+    cout << "Arbol después de la poda: " << endl;
     // verificamos que se ha llevado a cabo la poda
     imprimirAgen(A);
 
@@ -44,7 +47,6 @@ void busqueda_Rec(Agen<int> &A, int x, typename Agen<int>::nodo n)
         {
             podaAgen_Rec(A, n);
         }
-
         else // debemos seguir buscando
         {
             Agen<int>::nodo hijos = A.hijoIzqdo(n);
@@ -58,35 +60,35 @@ void busqueda_Rec(Agen<int> &A, int x, typename Agen<int>::nodo n)
     }
 }
 
-// debemos eliminar primero los nodos hoja, ya que así es como funciona el Agen en nuestro TAD Me elimina un nodo inexistente y no sé porqué
+// debemos eliminar primero los nodos hoja, ya que así es como funciona el Agen en nuestro TAD. Comenzaremos eliminando por los hijos izquierdo
 
 void podaAgen_Rec(Agen<int> &A, typename Agen<int>::nodo n)
 {
 
     if (n != Agen<int>::NODO_NULO)
     {
-        if (A.hijoIzqdo(n) == Agen<int>::NODO_NULO) // es un nodo hoja
+        if (A.hijoIzqdo(n) != Agen<int>::NODO_NULO && A.hijoIzqdo(A.hijoIzqdo(n)) == Agen<int>::NODO_NULO) // el hijo izquierdo de n es una hoja
         {
-            cout << "Se va a eliminar el nodo " << n->elto << endl;
-            typename Agen<int>::nodo pad = A.padre(n);
-            typename Agen<int>::nodo herm = A.hermDrcho(n);
-            A.eliminarHijoIzqdo(pad);
-            podaAgen_Rec(A, herm);
+            cout<<"Se va a eliminar el nodo:" <<A.hijoIzqdo(n)->elto<<endl;
+            A.eliminarHijoIzqdo(n);
+            podaAgen_Rec(A, n); // puede tener más hijos
         }
 
-        else // tiene al menos un hijo
+        else
         {
-            typename Agen<int>::nodo hijos = A.hijoIzqdo(n);
-
-            while (hijos != Agen<int>::NODO_NULO)
+            if (A.hijoIzqdo(n) != Agen<int>::NODO_NULO)
             {
-                podaAgen_Rec(A, hijos);
-                hijos = A.hermDrcho(hijos);
+                Agen<int>::nodo hijos = A.hijoIzqdo(n);
+                Agen<int>::nodo nod=hijos;
+                while (hijos != Agen<int>::NODO_NULO)
+                {
+                    podaAgen_Rec(A, hijos);
+                    hijos = A.hermDrcho(hijos);
+                }
+                podaAgen_Rec(A, A.padre(nod));
             }
         }
     }
 }
 
 // void podaAgen_Rec(Agen<int> &A, typename Agen<int>::nodo n,typename Agen<int>::nodo raiz)
-{
-}
